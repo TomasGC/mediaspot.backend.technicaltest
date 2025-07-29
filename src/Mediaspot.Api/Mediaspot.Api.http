@@ -1,0 +1,42 @@
+@Mediaspot_Api_HostAddress = https://localhost:7064
+
+### Create Asset
+POST {{Mediaspot_Api_HostAddress}}/assets
+Content-Type: application/json
+Accept: application/json
+
+{
+  "externalId": "123456",
+  "title": "Sample Asset",
+  "description": "A test asset",
+  "language": "en"
+}
+
+###
+
+@assetId = 3e66a1a6-a924-4b82-a65f-d11e2399e44b
+
+GET {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}
+
+### Register Media File
+
+POST {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/files?path=media/file/path.mp4&durationSeconds=120.5
+Accept: application/json
+###
+
+### Update Asset Metadata
+PUT {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/metadata
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "description": "Updated description",
+  "language": "en"
+}
+
+###
+
+### Archive Asset
+POST {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/archive
+
+###
