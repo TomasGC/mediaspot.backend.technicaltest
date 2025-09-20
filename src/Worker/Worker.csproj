@@ -4,14 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  
+    <RootNamespace>Mediaspot.Worker</RootNamespace>
+    <AssemblyName>Mediaspot.Worker</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Mediaspot.Domain\Mediaspot.Domain.csproj" />
-  </ItemGroup>
 
 </Project>
