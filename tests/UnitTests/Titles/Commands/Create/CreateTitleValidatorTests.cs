@@ -2,7 +2,7 @@ using Mediaspot.Application.Titles.Commands.Create;
 using Mediaspot.Domain.Titles.Enums;
 using Shouldly;
 
-namespace Mediaspot.UnitTests.Titles.Commands;
+namespace Mediaspot.UnitTests.Titles.Commands.Create;
 
 public class CreateTitleValidatorTests
 {

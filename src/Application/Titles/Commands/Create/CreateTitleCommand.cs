@@ -9,5 +9,5 @@ public sealed record CreateTitleCommand(
     string Name,
     string OriginCountry,
     string OriginalLanguage,
-    string Description,
+    string? Description,
     ushort? SeasonNumber) : IRequest<Guid>;

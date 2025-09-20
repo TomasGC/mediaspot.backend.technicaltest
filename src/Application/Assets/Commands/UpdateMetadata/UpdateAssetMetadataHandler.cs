@@ -4,10 +4,10 @@ using MediatR;
 
 namespace Mediaspot.Application.Assets.Commands.UpdateMetadata;
 
-public sealed class UpdateMetadataHandler(IAssetRepository repo, IUnitOfWork uow)
-    : IRequestHandler<UpdateMetadataCommand>
+public sealed class UpdateAssetMetadataHandler(IAssetRepository repo, IUnitOfWork uow)
+    : IRequestHandler<UpdateAssetMetadataCommand>
 {
-    public async Task Handle(UpdateMetadataCommand request, CancellationToken ct)
+    public async Task Handle(UpdateAssetMetadataCommand request, CancellationToken ct)
     {
         var asset = await repo.GetAsync(request.AssetId, ct) ?? throw new KeyNotFoundException("Asset not found");
 

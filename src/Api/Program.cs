@@ -1,10 +1,12 @@
-using Mediaspot.Api.DTOs;
+using Mediaspot.Api.DTOs.Assets;
+using Mediaspot.Api.DTOs.Titles;
 using Mediaspot.Application.Assets.Commands.Archive;
 using Mediaspot.Application.Assets.Commands.Create;
 using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
 using Mediaspot.Application.Assets.Commands.UpdateMetadata;
 using Mediaspot.Application.Assets.Queries.GetById;
 using Mediaspot.Application.Titles.Commands.Create;
+using Mediaspot.Application.Titles.Commands.UpdateMetadata;
 using Mediaspot.Application.Titles.Queries.GetByExternalId;
 using Mediaspot.Application.Titles.Queries.GetById;
 using Mediaspot.Infrastructure;
@@ -66,6 +68,16 @@ app.MapGroup("/titles")
     .WithTags("Titles")
     .WithOpenApi();
 
+app.MapGroup("/titles")
+    .MapPut("{id:guid}/metadata", async (Guid id, UpdateTitleMetadataDto dto, ISender sender) =>
+    {
+        await sender.Send(new UpdateTitleMetadataCommand(id, dto.Name, dto.OriginCountry, dto.OriginalLanguage, dto.Description, dto.SeasonNumber));
+        return Results.NoContent();
+    })
+    .WithName("PutUpdateTitleMetadata")
+    .WithTags("Titles")
+    .WithOpenApi();
+
 
 
 app.MapGroup("/assets")
@@ -97,12 +109,12 @@ app.MapGroup("/assets")
     .WithOpenApi();
 
 app.MapGroup("/assets")
-    .MapPut("{id:guid}/metadata", async (Guid id, UpdateMetadataDto dto, ISender sender) =>
+    .MapPut("{id:guid}/metadata", async (Guid id, UpdateAssetMetadataDto dto, ISender sender) =>
     {
-        await sender.Send(new UpdateMetadataCommand(id, dto.Title, dto.Description, dto.Language));
+        await sender.Send(new UpdateAssetMetadataCommand(id, dto.Title, dto.Description, dto.Language));
         return Results.NoContent();
     })
-    .WithName("PutUpdateMetadata")
+    .WithName("PutUpdateAssetMetadata")
     .WithTags("Assets")
     .WithOpenApi();
 

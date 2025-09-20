@@ -33,4 +33,10 @@ public sealed class Title : AggregateRoot
 
         Raise(new TitleCreated(Id));
     }
+
+    public void UpdateMetadata(Metadata metadata)
+    {
+        Metadata = metadata;
+        Raise(new MetadataUpdated(Id));
+    }
 }
