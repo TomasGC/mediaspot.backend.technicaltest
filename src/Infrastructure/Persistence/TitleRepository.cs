@@ -11,4 +11,6 @@ public sealed class TitleRepository(MediaspotDbContext db) : ITitleRepository
 
     public Task<Title?> GetByExternalIdAsync(string externalId, CancellationToken ct)
         => db.Titles.FirstOrDefaultAsync(a => a.ExternalId == externalId, ct);
+
+    public async Task AddAsync(Title title, CancellationToken ct) => await db.Titles.AddAsync(title, ct);
 }

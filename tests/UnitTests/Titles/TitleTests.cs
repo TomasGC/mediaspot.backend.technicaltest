@@ -1,5 +1,6 @@
 using Mediaspot.Domain.Titles;
 using Mediaspot.Domain.Titles.Enums;
+using Mediaspot.Domain.Titles.Events;
 using Mediaspot.Domain.Titles.ValueObjects;
 using Shouldly;
 
@@ -23,5 +24,6 @@ public class TitleTests
         title.ExternalId.ShouldBe(externalId);
         title.Type.ShouldBe(type);
         title.Metadata.ShouldBe(metadata);
+        title.DomainEvents.OfType<TitleCreated>().Any(ac => ac.TitleId == title.Id).ShouldBeTrue();
     }
 }

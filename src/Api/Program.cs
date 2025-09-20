@@ -4,12 +4,12 @@ using Mediaspot.Application.Assets.Commands.Create;
 using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
 using Mediaspot.Application.Assets.Commands.UpdateMetadata;
 using Mediaspot.Application.Assets.Queries.GetById;
+using Mediaspot.Application.Titles.Commands.Create;
 using Mediaspot.Application.Titles.Queries.GetByExternalId;
 using Mediaspot.Application.Titles.Queries.GetById;
 using Mediaspot.Infrastructure;
 using Mediaspot.Infrastructure.Persistence;
 using MediatR;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +54,15 @@ app.MapGroup("/titles")
         return Results.Ok(asset);
     })
     .WithName("GetTitleByExternalId")
+    .WithTags("Titles")
+    .WithOpenApi();
+
+app.MapGroup("/titles")
+    .MapPost("", async (CreateTitleCommand cmd, ISender sender) =>
+    {
+        Results.Created("/titles", new { id = await sender.Send(cmd) });
+    })
+    .WithName("PostCreateTitle")
     .WithTags("Titles")
     .WithOpenApi();
 

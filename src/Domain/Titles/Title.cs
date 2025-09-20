@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Domain.Common;
 using Mediaspot.Domain.Titles.Enums;
+using Mediaspot.Domain.Titles.Events;
 using Mediaspot.Domain.Titles.ValueObjects;
 
 namespace Mediaspot.Domain.Titles;
@@ -29,5 +30,7 @@ public sealed class Title : AggregateRoot
         ExternalId = externalId;
         Type = type;
         Metadata = metadata;
+
+        Raise(new TitleCreated(Id));
     }
 }
