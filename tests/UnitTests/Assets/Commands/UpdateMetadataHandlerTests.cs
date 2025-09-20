@@ -1,28 +1,28 @@
-using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
+using Mediaspot.Application.Assets.Commands.UpdateMetadata;
 using Mediaspot.Application.Common;
 using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
 using Moq;
 using Shouldly;
 
-namespace Mediaspot.UnitTests;
+namespace Mediaspot.UnitTests.Assets.Commands;
 
-public class RegisterMediaFileHandlerTests
+public class UpdateMetadataHandlerTests
 {
     [Fact]
-    public async Task Handle_Should_Register_MediaFile_And_Save()
+    public async Task Handle_Should_Update_Metadata_And_Save()
     {
         var asset = new Asset("ext", new Metadata("t", null, null));
         var repo = new Mock<IAssetRepository>();
         var uow = new Mock<IUnitOfWork>();
         repo.Setup(r => r.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(asset);
         uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-        var handler = new RegisterMediaFileHandler(repo.Object, uow.Object);
-        var cmd = new RegisterMediaFileCommand(asset.Id, "/file.mp4", 10);
+        var handler = new UpdateMetadataHandler(repo.Object, uow.Object);
+        var cmd = new UpdateMetadataCommand(asset.Id, "new", "desc", "fr");
 
-        var mfId = await handler.Handle(cmd, CancellationToken.None);
+        await handler.Handle(cmd, CancellationToken.None);
 
-        asset.MediaFiles.ShouldContain(mf => mf.Id.Value == mfId);
+        asset.Metadata.Title.ShouldBe("new");
         uow.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -32,8 +32,8 @@ public class RegisterMediaFileHandlerTests
         var repo = new Mock<IAssetRepository>();
         var uow = new Mock<IUnitOfWork>();
         repo.Setup(r => r.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Asset?)null);
-        var handler = new RegisterMediaFileHandler(repo.Object, uow.Object);
-        var cmd = new RegisterMediaFileCommand(Guid.NewGuid(), "/file.mp4", 10);
+        var handler = new UpdateMetadataHandler(repo.Object, uow.Object);
+        var cmd = new UpdateMetadataCommand(Guid.NewGuid(), "new", "desc", "fr");
 
         await Should.ThrowAsync<KeyNotFoundException>(() => handler.Handle(cmd, CancellationToken.None));
     }

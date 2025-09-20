@@ -3,7 +3,7 @@ using Mediaspot.Domain.Assets.ValueObjects;
 using Mediaspot.Domain.Assets.Events;
 using Shouldly;
 
-namespace Mediaspot.UnitTests;
+namespace Mediaspot.UnitTests.Assets;
 
 public class AssetTests
 {

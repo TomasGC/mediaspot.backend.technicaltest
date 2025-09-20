@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddDbContext<MediaspotDbContext>(o => o.UseInMemoryDatabase(databaseName));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITitleRepository, TitleRepository>();
         services.AddScoped<IAssetRepository, AssetRepository>();
         services.AddScoped<ITranscodeJobRepository, TranscodeJobRepository>();
 

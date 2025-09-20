@@ -5,7 +5,7 @@ using Mediaspot.Domain.Assets.ValueObjects;
 using Moq;
 using Shouldly;
 
-namespace Mediaspot.UnitTests;
+namespace Mediaspot.UnitTests.Assets.Commands;
 
 public class ArchiveAssetHandlerTests
 {

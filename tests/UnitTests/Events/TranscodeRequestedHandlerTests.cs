@@ -4,7 +4,7 @@ using Mediaspot.Domain.Assets.Events;
 using Mediaspot.Domain.Transcoding;
 using Moq;
 
-namespace Mediaspot.UnitTests;
+namespace Mediaspot.UnitTests.Events;
 
 public class TranscodeRequestedHandlerTests
 {

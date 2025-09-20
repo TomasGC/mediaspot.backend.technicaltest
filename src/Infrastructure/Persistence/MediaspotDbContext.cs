@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.Domain.Titles;
 using Mediaspot.Domain.Transcoding;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,11 +8,32 @@ namespace Mediaspot.Infrastructure.Persistence;
 
 public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> options) : DbContext(options)
 {
+    public DbSet<Title> Titles => Set<Title>();
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<TranscodeJob> TranscodeJobs => Set<TranscodeJob>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Title>(t =>
+        {
+            t.HasKey(a => a.Id);
+            t.Property(a => a.ExternalId).IsRequired();
+            t.Property(a => a.Type).IsRequired();
+            t.OwnsOne(a => a.Metadata, m =>
+            {
+                m.Property(x => x.Name).IsRequired();
+                m.Property(x => x.Description);
+                m.Property(x => x.SeasonNumber);
+                m.OwnsOne(x => x.Origin, o =>
+                {
+                    o.Property(y => y.Country).IsRequired();
+                    o.Property(y => y.Language).IsRequired();
+                });
+            });
+
+            t.HasIndex(a => a.ExternalId).IsUnique();
+        });
+
         modelBuilder.Entity<Asset>(b =>
         {
             b.HasKey(a => a.Id);
