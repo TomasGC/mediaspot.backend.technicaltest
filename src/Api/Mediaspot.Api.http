@@ -59,13 +59,23 @@ Accept: application/json
   "seasonNumber": null
 }
 
-###
-
+### Get by Id
 @titleId = fadc944b-6f42-4962-9e71-bb6f68dec51c
 GET {{Mediaspot_Api_HostAddress}}/titles/{{titleId}}
 
-###
+### Get by ExternalId
 GET {{Mediaspot_Api_HostAddress}}/titles/{{titleExternalId}}
+
+### List
+@type = type=0
+@namePattern = namePattern=
+@fromReleaseDate = fromReleaseDate=2024-01-01
+@toReleaseDate = toReleaseDate=2026-01-01
+@originCountry = originCountry=
+@originalLanguage = originalLanguage=
+@page = page=0
+@pageSize = pageSize=10
+GET {{Mediaspot_Api_HostAddress}}/titles?{{type}}&{{namePattern}}&{{fromReleaseDate}}&{{toReleaseDate}}&{{originCountry}}&{{originalLanguage}}&{{page}}&{{pageSize}}
 
 ### Update Title Metadata
 PUT {{Mediaspot_Api_HostAddress}}/titles/{{titleId}}/metadata

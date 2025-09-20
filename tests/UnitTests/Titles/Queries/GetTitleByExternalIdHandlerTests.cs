@@ -5,7 +5,7 @@ using Mediaspot.Domain.Titles.Enums;
 using Moq;
 using Shouldly;
 
-namespace Mediaspot.UnitTests.Titles.Commands;
+namespace Mediaspot.UnitTests.Titles.Queries;
 
 public class GetTitleByExternalIdHandlerTests
 {

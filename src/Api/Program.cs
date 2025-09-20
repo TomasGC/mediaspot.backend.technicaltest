@@ -9,9 +9,13 @@ using Mediaspot.Application.Titles.Commands.Create;
 using Mediaspot.Application.Titles.Commands.UpdateMetadata;
 using Mediaspot.Application.Titles.Queries.GetByExternalId;
 using Mediaspot.Application.Titles.Queries.GetById;
+using Mediaspot.Application.Titles.Queries.List;
+using Mediaspot.Domain.Titles.Filters;
 using Mediaspot.Infrastructure;
 using Mediaspot.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +60,16 @@ app.MapGroup("/titles")
         return Results.Ok(title);
     })
     .WithName("GetTitleByExternalId")
+    .WithTags("Titles")
+    .WithOpenApi();
+
+app.MapGroup("/titles")
+    .MapGet("", async ([AsParameters] ListTitlesQuery query, ISender sender) =>
+    {
+        var title = await sender.Send(query);
+        return Results.Ok(title);
+    })
+    .WithName("ListTitles")
     .WithTags("Titles")
     .WithOpenApi();
 
