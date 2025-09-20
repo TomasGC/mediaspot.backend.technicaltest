@@ -40,8 +40,8 @@ app.UseHttpsRedirection();
 app.MapGroup("/titles")
     .MapGet("{id:guid}", async (Guid id, ISender sender) =>
     {
-        var asset = await sender.Send(new GetTitleByIdQuery(id));
-        return Results.Ok(asset);
+        var title = await sender.Send(new GetTitleByIdQuery(id));
+        return Results.Ok(title);
     })
     .WithName("GetTitleById")
     .WithTags("Titles")
@@ -50,8 +50,8 @@ app.MapGroup("/titles")
 app.MapGroup("/titles")
     .MapGet("{externalId}", async (string externalId, ISender sender) =>
     {
-        var asset = await sender.Send(new GetTitleByExternalIdQuery(externalId));
-        return Results.Ok(asset);
+        var title = await sender.Send(new GetTitleByExternalIdQuery(externalId));
+        return Results.Ok(title);
     })
     .WithName("GetTitleByExternalId")
     .WithTags("Titles")
@@ -60,7 +60,7 @@ app.MapGroup("/titles")
 app.MapGroup("/titles")
     .MapPost("", async (CreateTitleCommand cmd, ISender sender) =>
     {
-        Results.Created("/titles", new { id = await sender.Send(cmd) });
+        return Results.Created("/titles", new { id = await sender.Send(cmd) });
     })
     .WithName("PostCreateTitle")
     .WithTags("Titles")
@@ -81,7 +81,7 @@ app.MapGroup("/assets")
 app.MapGroup("/assets")
     .MapPost("", async (CreateAssetCommand cmd, ISender sender) =>
     {
-        Results.Created("/assets", new { id = await sender.Send(cmd) });
+        return Results.Created("/assets", new { id = await sender.Send(cmd) });
     })
     .WithName("PostCreateAsset")
     .WithTags("Assets")
@@ -90,7 +90,7 @@ app.MapGroup("/assets")
 app.MapGroup("/assets")
     .MapPost("{id:guid}/files", async (Guid id, string path, double durationSeconds, ISender sender) =>
     {
-        Results.Ok(new { mediaFileId = await sender.Send(new RegisterMediaFileCommand(id, path, durationSeconds)) });
+        return Results.Ok(new { mediaFileId = await sender.Send(new RegisterMediaFileCommand(id, path, durationSeconds)) });
     })
     .WithName("PostRegisterMediaFile")
     .WithTags("Assets")
