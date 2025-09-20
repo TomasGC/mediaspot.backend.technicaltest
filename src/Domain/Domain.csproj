@@ -1,16 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  
-    <RootNamespace>Mediaspot.Domain</RootNamespace>
-    <AssemblyName>Mediaspot.Domain</AssemblyName>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Description>Core domain models and logic.</Description>
+		
+		<RootNamespace>Mediaspot.Domain</RootNamespace>
+		<AssemblyName>Mediaspot.Domain</AssemblyName>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="13.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MediatR" />
+	</ItemGroup>
 
 </Project>
