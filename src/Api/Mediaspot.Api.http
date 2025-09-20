@@ -40,3 +40,43 @@ Content-Type: application/json
 POST {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/archive
 
 ###
+
+
+
+@titleExternalId = 123456
+
+### Create Title
+POST {{Mediaspot_Api_HostAddress}}/titles
+Content-Type: application/json
+Accept: application/json
+{
+  "externalId": "{{titleExternalId}}",
+  "type": 0,
+  "name": "Title's name",
+  "originCountry": "France",
+  "originalLanguage": "French",
+  "description": "A test title",
+  "seasonNumber": null
+}
+
+###
+
+@titleId = fadc944b-6f42-4962-9e71-bb6f68dec51c
+GET {{Mediaspot_Api_HostAddress}}/titles/{{titleId}}
+
+###
+GET {{Mediaspot_Api_HostAddress}}/titles/{{titleExternalId}}
+
+### Update Title Metadata
+PUT {{Mediaspot_Api_HostAddress}}/titles/{{titleId}}/metadata
+Content-Type: application/json
+
+{
+  "name": "Updated Title",
+  "originCountry": "Corsica",
+  "originalLanguage": "French",
+  "description": "Updated description",
+  "seasonNumber": null
+}
+
+###
