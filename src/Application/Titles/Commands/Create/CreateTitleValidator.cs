@@ -9,8 +9,7 @@ public sealed class CreateTitleValidator : AbstractValidator<CreateTitleCommand>
     {
         RuleFor(x => x.ExternalId).NotEmpty();
         RuleFor(x => x.Name).NotEmpty();
-        RuleFor(x => x.OriginCountry).NotEmpty();
-        RuleFor(x => x.OriginalLanguage).NotEmpty();
+        RuleFor(x => x.Origin).SetValidator(new OriginValidator());
 
         When(x => x.Type == TitleType.TvShow, () =>
         {

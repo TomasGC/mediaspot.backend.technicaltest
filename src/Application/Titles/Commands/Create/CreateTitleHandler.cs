@@ -19,9 +19,11 @@ public sealed class CreateTitleHandler(ITitleRepository repo, IUnitOfWork uow)
         var title = new Title(
             request.ExternalId,
             request.Type,
-            new(request.Name, new(request.OriginCountry, request.OriginalLanguage),
-            request.Description,
-            request.SeasonNumber));
+            new(
+                request.Name,
+                request.Origin,
+                request.Description,
+                request.SeasonNumber));
 
         await repo.AddAsync(title, ct);
         await uow.SaveChangesAsync(ct);

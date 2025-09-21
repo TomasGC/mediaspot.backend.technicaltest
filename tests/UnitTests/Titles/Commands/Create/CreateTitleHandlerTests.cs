@@ -21,7 +21,7 @@ public class CreateTitleHandlerTests
         uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
 
         var handler = new CreateTitleHandler(repo.Object, uow.Object);
-        var cmd = new CreateTitleCommand("ext-unique", TitleType.Movie, "name", "France", "French", "description", null);
+        var cmd = new CreateTitleCommand("ext-unique", TitleType.Movie, "name", new("France", "French"), "description", null);
 
         // Act
         var id = await handler.Handle(cmd, CancellationToken.None);
@@ -48,8 +48,7 @@ public class CreateTitleHandlerTests
             title.ExternalId,
             title.Type,
             title.Metadata.Name,
-            title.Metadata.Origin.Country,
-            title.Metadata.Origin.Language,
+            new(title.Metadata.Origin.Country, title.Metadata.Origin.Language),
             title.Metadata.Description,
             title.Metadata.SeasonNumber);
 

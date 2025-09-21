@@ -1,0 +1,39 @@
+### Create Asset
+POST {{Mediaspot_Api_HostAddress}}/assets
+Content-Type: application/json
+Accept: application/json
+{
+  "externalId": "123456",
+  "title": "Sample Asset",
+  "description": "A test asset",
+  "language": "en"
+}
+
+###
+
+@assetId = bdbbf95e-4b55-4d73-9223-27468d763042
+
+GET {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}
+
+### Register Media File
+@path = path=media/file/path.mp4
+@durationSeconds = durationSeconds=120.5
+POST {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/files?{{path}}&{{durationSeconds}}
+Accept: application/json
+###
+
+### Update Asset Metadata
+PUT {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/metadata
+Content-Type: application/json
+{
+  "title": "Updated Title",
+  "description": "Updated description",
+  "language": "en"
+}
+
+###
+
+### Archive Asset
+POST {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}/archive
+
+###

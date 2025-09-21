@@ -1,5 +1,6 @@
 using Mediaspot.Api.DTOs.Assets;
 using Mediaspot.Api.DTOs.Titles;
+using Mediaspot.Api.Endpoints;
 using Mediaspot.Application.Assets.Commands.Archive;
 using Mediaspot.Application.Assets.Commands.Create;
 using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
@@ -10,12 +11,9 @@ using Mediaspot.Application.Titles.Commands.UpdateMetadata;
 using Mediaspot.Application.Titles.Queries.GetByExternalId;
 using Mediaspot.Application.Titles.Queries.GetById;
 using Mediaspot.Application.Titles.Queries.List;
-using Mediaspot.Domain.Titles.Filters;
 using Mediaspot.Infrastructure;
 using Mediaspot.Infrastructure.Persistence;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,103 +41,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGroup("/titles")
-    .MapGet("{id:guid}", async (Guid id, ISender sender) =>
-    {
-        var title = await sender.Send(new GetTitleByIdQuery(id));
-        return Results.Ok(title);
-    })
-    .WithName("GetTitleById")
-    .WithTags("Titles")
-    .WithOpenApi();
-
-app.MapGroup("/titles")
-    .MapGet("{externalId}", async (string externalId, ISender sender) =>
-    {
-        var title = await sender.Send(new GetTitleByExternalIdQuery(externalId));
-        return Results.Ok(title);
-    })
-    .WithName("GetTitleByExternalId")
-    .WithTags("Titles")
-    .WithOpenApi();
-
-app.MapGroup("/titles")
-    .MapGet("", async ([AsParameters] ListTitlesQuery query, ISender sender) =>
-    {
-        var title = await sender.Send(query);
-        return Results.Ok(title);
-    })
-    .WithName("ListTitles")
-    .WithTags("Titles")
-    .WithOpenApi();
-
-app.MapGroup("/titles")
-    .MapPost("", async (CreateTitleCommand cmd, ISender sender) =>
-    {
-        return Results.Created("/titles", new { id = await sender.Send(cmd) });
-    })
-    .WithName("PostCreateTitle")
-    .WithTags("Titles")
-    .WithOpenApi();
-
-app.MapGroup("/titles")
-    .MapPut("{id:guid}/metadata", async (Guid id, UpdateTitleMetadataDto dto, ISender sender) =>
-    {
-        await sender.Send(new UpdateTitleMetadataCommand(id, dto.Name, dto.OriginCountry, dto.OriginalLanguage, dto.Description, dto.SeasonNumber));
-        return Results.NoContent();
-    })
-    .WithName("PutUpdateTitleMetadata")
-    .WithTags("Titles")
-    .WithOpenApi();
-
-
-
-app.MapGroup("/assets")
-    .MapGet("{id:guid}", async (Guid id, ISender sender) =>
-    {
-        var asset = await sender.Send(new GetAssetByIdQuery(id));
-        return Results.Ok(asset);
-    })
-    .WithName("GetAssetById")
-    .WithTags("Assets")
-    .WithOpenApi();
-
-app.MapGroup("/assets")
-    .MapPost("", async (CreateAssetCommand cmd, ISender sender) =>
-    {
-        return Results.Created("/assets", new { id = await sender.Send(cmd) });
-    })
-    .WithName("PostCreateAsset")
-    .WithTags("Assets")
-    .WithOpenApi();
-
-app.MapGroup("/assets")
-    .MapPost("{id:guid}/files", async (Guid id, string path, double durationSeconds, ISender sender) =>
-    {
-        return Results.Ok(new { mediaFileId = await sender.Send(new RegisterMediaFileCommand(id, path, durationSeconds)) });
-    })
-    .WithName("PostRegisterMediaFile")
-    .WithTags("Assets")
-    .WithOpenApi();
-
-app.MapGroup("/assets")
-    .MapPut("{id:guid}/metadata", async (Guid id, UpdateAssetMetadataDto dto, ISender sender) =>
-    {
-        await sender.Send(new UpdateAssetMetadataCommand(id, dto.Title, dto.Description, dto.Language));
-        return Results.NoContent();
-    })
-    .WithName("PutUpdateAssetMetadata")
-    .WithTags("Assets")
-    .WithOpenApi();
-
-app.MapGroup("/assets")
-    .MapPost("{id:guid}/archive", async (Guid id, ISender sender) =>
-    {
-        await sender.Send(new ArchiveAssetCommand(id));
-        return Results.NoContent();
-    })
-    .WithName("PostArchiveAsset")
-    .WithTags("Assets")
-    .WithOpenApi();
+app.MapTitleEndpoints()
+    .MapAssetEndpoints();
 
 app.Run();

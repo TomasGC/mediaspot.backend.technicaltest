@@ -1,4 +1,5 @@
 ﻿using Mediaspot.Domain.Titles.Enums;
+using Mediaspot.Domain.Titles.ValueObjects;
 using MediatR;
 
 namespace Mediaspot.Application.Titles.Commands.Create;
@@ -7,7 +8,6 @@ public sealed record CreateTitleCommand(
     string ExternalId,
     TitleType Type,
     string Name,
-    string OriginCountry,
-    string OriginalLanguage,
+    Origin Origin,
     string? Description,
     ushort? SeasonNumber) : IRequest<Guid>;
