@@ -14,6 +14,13 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ConfigureTitle(modelBuilder);
+        ConfigureAsset(modelBuilder);
+        ConfigureTranscodeJob(modelBuilder);
+    }
+
+    private static void ConfigureTitle(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Title>(t =>
         {
             t.HasKey(a => a.Id);
@@ -32,8 +39,12 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
             });
 
             t.HasIndex(a => a.ExternalId).IsUnique();
+            t.HasIndex(a => new { a.Type });
         });
+    }
 
+    private static void ConfigureAsset(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Asset>(b =>
         {
             b.HasKey(a => a.Id);
@@ -67,14 +78,21 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
             b.Navigation("_mediaFiles").UsePropertyAccessMode(PropertyAccessMode.Field);
 
             b.Property<bool>("Archived").HasField("<Archived>k__BackingField");
+
             b.HasIndex(a => a.ExternalId).IsUnique();
         });
+    }
 
+    private static void ConfigureTranscodeJob(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<TranscodeJob>(b =>
         {
             b.HasKey(j => j.Id);
             b.Property(j => j.Preset).IsRequired();
             b.Property(j => j.Status);
+            b.Property(j => j.CreatedAt).IsRequired();
+            b.Property(j => j.UpdatedAt);
+
             b.HasIndex(j => new { j.AssetId, j.Status });
         });
     }
