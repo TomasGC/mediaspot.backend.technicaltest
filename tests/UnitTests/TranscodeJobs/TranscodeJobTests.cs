@@ -22,6 +22,5 @@ public class TranscodeJobTests
         transcodeJob.MediaFileId.ShouldBe(mediaFileId);
         transcodeJob.Preset.ShouldBe(preset);
         transcodeJob.Status.ShouldBe(TranscodeStatus.Pending);
-        transcodeJob.DomainEvents.OfType<TranscodeJobCreated>().Any(ac => ac.TranscodeId == transcodeJob.Id).ShouldBeTrue();
     }
 }

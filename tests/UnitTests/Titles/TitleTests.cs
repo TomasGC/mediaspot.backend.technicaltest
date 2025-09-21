@@ -24,6 +24,6 @@ public class TitleTests
         title.ExternalId.ShouldBe(externalId);
         title.Type.ShouldBe(type);
         title.Metadata.ShouldBe(metadata);
-        title.DomainEvents.OfType<TitleCreated>().Any(ac => ac.TitleId == title.Id).ShouldBeTrue();
+        title.DomainEvents.OfType<TitleCreated>().Any(ac => ac.Id == title.Id).ShouldBeTrue();
     }
 }

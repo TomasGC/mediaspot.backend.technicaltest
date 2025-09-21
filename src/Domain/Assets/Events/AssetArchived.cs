@@ -2,7 +2,14 @@
 
 namespace Mediaspot.Domain.Assets.Events;
 
-public sealed record AssetArchived(Guid AssetId) : IDomainEvent
+public sealed record AssetArchived : IDomainEvent
 {
-    public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
+    public Guid Id { get; }
+    public DateTime OccurredOnUtc { get; }
+
+    public AssetArchived(Guid assetId)
+    {
+        Id = assetId;
+        OccurredOnUtc = DateTime.UtcNow;
+    }
 }

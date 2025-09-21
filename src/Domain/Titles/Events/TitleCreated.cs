@@ -2,7 +2,14 @@
 
 namespace Mediaspot.Domain.Titles.Events;
 
-public sealed record TitleCreated(Guid TitleId) : IDomainEvent
+public sealed record TitleCreated : IDomainEvent
 {
-    public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
+    public Guid Id { get; }
+    public DateTime OccurredOnUtc { get; }
+
+    public TitleCreated(Guid titleId)
+    {
+        Id = titleId;
+        OccurredOnUtc = DateTime.UtcNow;
+    }
 }

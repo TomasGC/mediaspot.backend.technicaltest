@@ -1,19 +1,8 @@
-using Mediaspot.Api.DTOs.Assets;
-using Mediaspot.Api.DTOs.Titles;
 using Mediaspot.Api.Endpoints;
-using Mediaspot.Application.Assets.Commands.Archive;
-using Mediaspot.Application.Assets.Commands.Create;
-using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
-using Mediaspot.Application.Assets.Commands.UpdateMetadata;
-using Mediaspot.Application.Assets.Queries.GetById;
-using Mediaspot.Application.Titles.Commands.Create;
-using Mediaspot.Application.Titles.Commands.UpdateMetadata;
-using Mediaspot.Application.Titles.Queries.GetByExternalId;
-using Mediaspot.Application.Titles.Queries.GetById;
-using Mediaspot.Application.Titles.Queries.List;
+using Mediaspot.Application.Workers;
 using Mediaspot.Infrastructure;
 using Mediaspot.Infrastructure.Persistence;
-using MediatR;
+using Mediaspot.Worker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure("Mediaspot.Backend.TechnicalTest");
+builder.Services.AddHostedService<TranscoderBackgroundService>();
+builder.Services.AddSingleton<TranscodeJobQueue>();
 
 var app = builder.Build();
 

@@ -1,9 +1,15 @@
 ﻿using Mediaspot.Domain.Common;
-using MediatR;
 
 namespace Mediaspot.Domain.Titles.Events;
 
-public sealed record MetadataUpdated(Guid TitleId) : IDomainEvent, INotification
+public sealed record MetadataUpdated : IDomainEvent
 {
-    public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
+    public Guid Id { get; }
+    public DateTime OccurredOnUtc { get; }
+
+    public MetadataUpdated(Guid titleId)
+    {
+        Id = titleId;
+        OccurredOnUtc = DateTime.UtcNow;
+    }
 }

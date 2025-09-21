@@ -21,12 +21,12 @@ public sealed class UnitOfWork(MediaspotDbContext db, IPublisher publisher) : IU
         foreach (var domainEvent in domainEvents)
         {
             await _publisher.Publish(domainEvent, ct);
-        }
 
-        // Clear domain events after publishing
-        foreach (var entity in _db.ChangeTracker.Entries<AggregateRoot>())
-        {
-            entity.Entity.ClearDomainEvents();
+            // Clear domain events after publishing
+            foreach (var entity in _db.ChangeTracker.Entries<AggregateRoot>())
+            {
+                entity.Entity.RemoveEvent(domainEvent);
+            }
         }
 
         return result;

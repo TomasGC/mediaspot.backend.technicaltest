@@ -28,6 +28,8 @@ public sealed class Asset : AggregateRoot
         var mf = new MediaFile(MediaFileId.New(), path, duration);
         _mediaFiles.Add(mf);
         Raise(new MediaFileRegistered(Id, mf.Id.Value));
+        
+        Raise(new TranscodeRequested(Id, mf.Id.Value, "4K"));
         return mf;
     }
 

@@ -2,7 +2,14 @@
 
 namespace Mediaspot.Domain.Transcoding.Events;
 
-public sealed record TranscodeJobCompleted(Guid TranscodeId) : IDomainEvent
+public sealed record TranscodeJobCompleted : IDomainEvent
 {
-    public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
+    public Guid Id { get; }
+    public DateTime OccurredOnUtc { get; }
+
+    public TranscodeJobCompleted(Guid transcodeJobId)
+    {
+        Id = transcodeJobId;
+        OccurredOnUtc = DateTime.UtcNow;
+    }
 }

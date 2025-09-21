@@ -1,3 +1,5 @@
+@Mediaspot_Api_HostAddress = https://localhost:7064
+
 ### Create Asset
 POST {{Mediaspot_Api_HostAddress}}/assets
 Content-Type: application/json
@@ -11,7 +13,7 @@ Accept: application/json
 
 ###
 
-@assetId = bdbbf95e-4b55-4d73-9223-27468d763042
+@assetId = 1ec1e553-c4cf-4f14-b5f7-6febf0ec701a
 
 GET {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}
 

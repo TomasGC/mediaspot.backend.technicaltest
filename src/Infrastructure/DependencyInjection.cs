@@ -18,9 +18,9 @@ public static class DependencyInjection
         services.AddScoped<IAssetRepository, AssetRepository>();
         services.AddScoped<ITranscodeJobRepository, TranscodeJobRepository>();
 
-        // MediatR
-
         services.AddValidatorsFromAssembly(typeof(CreateAssetValidator).Assembly);
+
+        // MediatR
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(CreateAssetCommand).Assembly);

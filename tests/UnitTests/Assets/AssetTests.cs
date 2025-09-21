@@ -15,7 +15,7 @@ public class AssetTests
 
         asset.ExternalId.ShouldBe("ext-1");
         asset.Metadata.ShouldBe(metadata);
-        asset.DomainEvents.OfType<AssetCreated>().Any(ac => ac.AssetId == asset.Id).ShouldBeTrue();
+        asset.DomainEvents.OfType<AssetCreated>().Any(ac => ac.Id == asset.Id).ShouldBeTrue();
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class AssetTests
         var mf = asset.RegisterMediaFile(path, duration);
 
         asset.MediaFiles.ShouldContain(mf);
-        asset.DomainEvents.OfType<MediaFileRegistered>().Any(reg => reg.AssetId == asset.Id && reg.MediaFileId == mf.Id.Value).ShouldBeTrue();
+        asset.DomainEvents.OfType<MediaFileRegistered>().Any(reg => reg.AssetId == asset.Id && reg.Id == mf.Id.Value).ShouldBeTrue();
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class AssetTests
         asset.UpdateMetadata(newMeta);
 
         asset.Metadata.ShouldBe(newMeta);
-        asset.DomainEvents.OfType<MetadataUpdated>().Any(mu => mu.AssetId == asset.Id).ShouldBeTrue();
+        asset.DomainEvents.OfType<MetadataUpdated>().Any(mu => mu.Id == asset.Id).ShouldBeTrue();
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class AssetTests
         asset.Archive(_ => false);
 
         asset.Archived.ShouldBeTrue();
-        asset.DomainEvents.OfType<AssetArchived>().Any(aa => aa.AssetId == asset.Id).ShouldBeTrue();
+        asset.DomainEvents.OfType<AssetArchived>().Any(aa => aa.Id == asset.Id).ShouldBeTrue();
     }
 
     [Fact]
