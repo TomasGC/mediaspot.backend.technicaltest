@@ -3,7 +3,7 @@ using System.Threading.Channels;
 
 namespace Mediaspot.Application.Workers;
 
-public class TranscodeJobQueue
+public class TranscodeJobQueue : ITranscodeJobQueue
 {
     private readonly Channel<TranscodeJob> _channel;
 

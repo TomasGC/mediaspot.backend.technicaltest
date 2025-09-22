@@ -2,9 +2,9 @@
 
 namespace Mediaspot.Application.Assets.Commands.Create;
 
-public sealed class CreateAssetValidator : AbstractValidator<CreateAssetCommand>
+public abstract class BaseCreateAssetValidator<T> : AbstractValidator<T> where T : BaseCreateAssetCommand
 {
-    public CreateAssetValidator()
+    protected BaseCreateAssetValidator()
     {
         RuleFor(x => x.ExternalId).NotEmpty();
         RuleFor(x => x.Title).NotEmpty();

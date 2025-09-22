@@ -24,15 +24,9 @@ public static class Asset
             .WithName("GetAssetById")
             .WithOpenApi();
 
-        group.MapPost("", async (CreateAssetDto request, ISender sender) =>
+        group.MapPost("", async (BaseCreateAssetDto request, ISender sender) =>
             {
-                var cmd = new CreateAssetCommand(
-                    request.ExternalId,
-                    request.Title,
-                    request.Description,
-                    request.Language);
-
-                return Results.Created(API_ENDPOINT, new { id = await sender.Send(cmd) });
+                return Results.Created(API_ENDPOINT, new { id = await sender.Send(request.ToCommand()) });
             })
             .WithName("PostCreateAsset")
             .WithOpenApi();

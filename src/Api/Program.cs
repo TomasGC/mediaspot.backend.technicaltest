@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure("Mediaspot.Backend.TechnicalTest");
 builder.Services.AddHostedService<TranscoderBackgroundService>();
-builder.Services.AddSingleton<TranscodeJobQueue>();
+builder.Services.AddSingleton<ITranscodeJobQueue, TranscodeJobQueue>();
 
 var app = builder.Build();
 

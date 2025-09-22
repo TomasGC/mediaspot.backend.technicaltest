@@ -4,9 +4,9 @@ using MediatR;
 
 namespace Mediaspot.Application.Assets.Queries.GetById;
 
-public sealed class GetAssetByIdHandler(IAssetRepository repo) : IRequestHandler<GetAssetByIdQuery, Asset>
+public sealed class GetAssetByIdHandler(IAssetRepository repo) : IRequestHandler<GetAssetByIdQuery, BaseAsset>
 {
-    public async Task<Asset> Handle(GetAssetByIdQuery request, CancellationToken ct)
+    public async Task<BaseAsset> Handle(GetAssetByIdQuery request, CancellationToken ct)
     {
         return await repo.GetAsync(request.AssetId, ct) ?? throw new KeyNotFoundException("Asset not found");
     }

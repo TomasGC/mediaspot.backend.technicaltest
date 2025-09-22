@@ -15,7 +15,7 @@ public class TranscodeRequestedHandlerTests
         // Arrange
         var repo = new Mock<ITranscodeJobRepository>();
         var uow = new Mock<IUnitOfWork>();
-        var queue = new Mock<TranscodeJobQueue>();
+        var queue = new Mock<ITranscodeJobQueue>();
 
         repo.Setup(r => r.AddAsync(It.IsAny<TranscodeJob>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);

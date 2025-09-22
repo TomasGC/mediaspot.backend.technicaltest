@@ -9,7 +9,7 @@ namespace Mediaspot.Infrastructure.Persistence;
 public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> options) : DbContext(options)
 {
     public DbSet<Title> Titles => Set<Title>();
-    public DbSet<Asset> Assets => Set<Asset>();
+    public DbSet<BaseAsset> Assets => Set<BaseAsset>();
     public DbSet<TranscodeJob> TranscodeJobs => Set<TranscodeJob>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,10 +45,11 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
 
     private static void ConfigureAsset(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Asset>(b =>
+        modelBuilder.Entity<BaseAsset>(b =>
         {
             b.HasKey(a => a.Id);
             b.Property(a => a.ExternalId).IsRequired();
+            b.Property(a => a.Type).IsRequired();
             b.OwnsOne(a => a.Metadata, m =>
             {
                 m.Property(x => x.Title).IsRequired();
@@ -80,6 +81,32 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
             b.Property<bool>("Archived").HasField("<Archived>k__BackingField");
 
             b.HasIndex(a => a.ExternalId).IsUnique();
+            b.HasIndex(a => new { a.Type });
+        });
+
+        ConfigureAudioAsset(modelBuilder);
+        ConfigureVideoAsset(modelBuilder);
+    }
+
+    private static void ConfigureAudioAsset(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AudioAsset>(b =>
+        {
+            b.Property(j => j.Duration).IsRequired();
+            b.Property(j => j.Bitrate).IsRequired();
+            b.Property(j => j.SampleRate).IsRequired();
+            b.Property(j => j.Channels).IsRequired();
+        });
+    }
+
+    private static void ConfigureVideoAsset(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<VideoAsset>(b =>
+        {
+            b.Property(j => j.Duration).IsRequired();
+            b.Property(j => j.Resolution).IsRequired();
+            b.Property(j => j.FrameRate).IsRequired();
+            b.Property(j => j.Codec).IsRequired();
         });
     }
 

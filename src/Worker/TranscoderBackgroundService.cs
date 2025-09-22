@@ -10,7 +10,7 @@ namespace Mediaspot.Worker;
 
 public class TranscoderBackgroundService(
     IServiceProvider serviceProvider,
-    TranscodeJobQueue queue) : BackgroundService
+    ITranscodeJobQueue queue) : BackgroundService
 {
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {

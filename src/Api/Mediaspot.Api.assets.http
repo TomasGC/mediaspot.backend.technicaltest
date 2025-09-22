@@ -1,19 +1,42 @@
 @Mediaspot_Api_HostAddress = https://localhost:7064
 
-### Create Asset
+### Create Audio Asset
 POST {{Mediaspot_Api_HostAddress}}/assets
 Content-Type: application/json
 Accept: application/json
 {
+  "$type": "Audio",
   "externalId": "123456",
-  "title": "Sample Asset",
-  "description": "A test asset",
-  "language": "en"
+  "title": "Sample Audio Asset",
+  "description": "A test audio asset",
+  "language": "en",
+  "duration": 1000,
+  "bitRate": 320,
+  "sampleRate": 48000,
+  "channels": "7.1"
 }
 
 ###
 
-@assetId = 1ec1e553-c4cf-4f14-b5f7-6febf0ec701a
+### Create Video Asset
+POST {{Mediaspot_Api_HostAddress}}/assets
+Content-Type: application/json
+Accept: application/json
+{
+  "$type": "Video",
+  "externalId": "654321",
+  "title": "Sample Video Asset",
+  "description": "A test video asset",
+  "language": "en",
+  "duration": 1000,
+  "resolution": "4k",
+  "frameRate": 24,
+  "codec": "H.263"
+}
+
+###
+
+@assetId = 24c92b6f-623f-4800-a528-74b1ee4710ab
 
 GET {{Mediaspot_Api_HostAddress}}/assets/{{assetId}}
 

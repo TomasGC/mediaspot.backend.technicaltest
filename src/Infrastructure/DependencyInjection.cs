@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Mediaspot.Application.Assets.Commands.Create;
 using Mediaspot.Application.Common;
+using Mediaspot.Application.Titles.Commands.Create;
 using Mediaspot.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +18,12 @@ public static class DependencyInjection
         services.AddScoped<IAssetRepository, AssetRepository>();
         services.AddScoped<ITranscodeJobRepository, TranscodeJobRepository>();
 
-        services.AddValidatorsFromAssembly(typeof(CreateAssetValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(CreateTitleValidator).Assembly);
 
         // MediatR
         services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssembly(typeof(CreateAssetCommand).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(CreateTitleValidator).Assembly);
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 

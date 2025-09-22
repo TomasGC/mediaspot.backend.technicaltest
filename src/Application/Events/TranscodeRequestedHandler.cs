@@ -9,7 +9,7 @@ namespace Mediaspot.Application.Events;
 public sealed class TranscodeRequestedHandler(
     ITranscodeJobRepository repo,
     IUnitOfWork uow,
-    TranscodeJobQueue queue)
+    ITranscodeJobQueue queue)
     : INotificationHandler<TranscodeRequested>
 {
     public async Task Handle(TranscodeRequested @event, CancellationToken ct)

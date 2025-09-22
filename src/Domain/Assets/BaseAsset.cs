@@ -1,26 +1,32 @@
-﻿using Mediaspot.Domain.Assets.Events;
+﻿using Mediaspot.Domain.Assets.Enums;
+using Mediaspot.Domain.Assets.Events;
 using Mediaspot.Domain.Assets.ValueObjects;
 using Mediaspot.Domain.Common;
 
 namespace Mediaspot.Domain.Assets;
 
-public sealed class Asset : AggregateRoot
+public abstract class BaseAsset : AggregateRoot
 {
     private readonly List<MediaFile> _mediaFiles = [];
 
     public string ExternalId { get; private set; }
+    public AssetType Type { get; private set; }
     public Metadata Metadata { get; private set; }
     public bool Archived { get; private set; }
 
     public IReadOnlyCollection<MediaFile> MediaFiles => _mediaFiles.AsReadOnly();
 
-    private Asset() { ExternalId = string.Empty; Metadata = new("", null, null); }
+    protected BaseAsset()
+    {
+        ExternalId = string.Empty;
+        Metadata = new("", null, null);
+    }
 
-    public Asset(string externalId, Metadata metadata)
+    protected BaseAsset(string externalId, Metadata metadata, AssetType type)
     {
         ExternalId = externalId;
         Metadata = metadata;
-        Raise(new AssetCreated(Id));
+        Type = type;
     }
 
     public MediaFile RegisterMediaFile(FilePath path, Duration duration)

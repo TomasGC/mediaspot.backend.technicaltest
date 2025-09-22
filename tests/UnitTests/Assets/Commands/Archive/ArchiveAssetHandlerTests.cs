@@ -5,14 +5,14 @@ using Mediaspot.Domain.Assets.ValueObjects;
 using Moq;
 using Shouldly;
 
-namespace Mediaspot.UnitTests.Assets.Commands;
+namespace Mediaspot.UnitTests.Assets.Commands.Archive;
 
 public class ArchiveAssetHandlerTests
 {
     [Fact]
     public async Task Handle_Should_Archive_Asset_And_Save()
     {
-        var asset = new Asset("ext", new Metadata("t", null, null));
+        var asset = new AudioAsset("ext", new Metadata("t", null, null), 1000, 320, 48000, "7.1");
         var repo = new Mock<IAssetRepository>();
         var jobs = new Mock<ITranscodeJobRepository>();
         var uow = new Mock<IUnitOfWork>();
@@ -34,7 +34,7 @@ public class ArchiveAssetHandlerTests
         var repo = new Mock<IAssetRepository>();
         var jobs = new Mock<ITranscodeJobRepository>();
         var uow = new Mock<IUnitOfWork>();
-        repo.Setup(r => r.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Asset?)null);
+        repo.Setup(r => r.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((BaseAsset?)null);
         var handler = new ArchiveAssetHandler(repo.Object, jobs.Object, uow.Object);
         var cmd = new ArchiveAssetCommand(Guid.NewGuid());
 
@@ -44,7 +44,7 @@ public class ArchiveAssetHandlerTests
     [Fact]
     public async Task Handle_Should_Throw_If_ActiveJobs()
     {
-        var asset = new Asset("ext", new Metadata("t", null, null));
+        var asset = new AudioAsset("ext", new Metadata("t", null, null), 1000, 320, 48000, "7.1");
         var repo = new Mock<IAssetRepository>();
         var jobs = new Mock<ITranscodeJobRepository>();
         var uow = new Mock<IUnitOfWork>();
