@@ -1,4 +1,5 @@
 ﻿using Mediaspot.Api.DTOs.Titles;
+using Mediaspot.Api.Responses.Titles;
 using Mediaspot.Application.Titles.Commands.Create;
 using Mediaspot.Application.Titles.Commands.UpdateMetadata;
 using Mediaspot.Application.Titles.Queries.GetByExternalId;
@@ -19,7 +20,16 @@ public static class Title
         group.MapGet("{id:guid}", async (Guid id, ISender sender) =>
             {
                 var title = await sender.Send(new GetTitleByIdQuery(id));
-                return Results.Ok(title);
+                return Results.Ok(new GetTitleResponse(
+                    title.Id,
+                    title.ExternalId,
+                    title.Type,
+                    new(
+                        title.Metadata.Name,
+                        new(title.Metadata.Origin.Country, title.Metadata.Origin.Language),
+                        title.Metadata.Description,
+                        title.Metadata.SeasonNumber),
+                    title.ReleaseDate));
             })
             .WithName("GetTitleById")
             .WithOpenApi();
@@ -27,15 +37,48 @@ public static class Title
         group.MapGet("{externalId}", async (string externalId, ISender sender) =>
             {
                 var title = await sender.Send(new GetTitleByExternalIdQuery(externalId));
-                return Results.Ok(title);
+                return Results.Ok(new GetTitleByExternalIdResponse(
+                    title.Id,
+                    title.ExternalId,
+                    title.Type,
+                    new(
+                        title.Metadata.Name,
+                        new(title.Metadata.Origin.Country, title.Metadata.Origin.Language),
+                        title.Metadata.Description,
+                        title.Metadata.SeasonNumber),
+                    title.ReleaseDate));
             })
             .WithName("GetTitleByExternalId")
             .WithOpenApi();
 
-        group.MapGet("", async ([AsParameters] ListTitlesQuery query, ISender sender) =>
+        group.MapGet("", async ([AsParameters] ListTitlesDto request, ISender sender) =>
             {
-                var title = await sender.Send(query);
-                return Results.Ok(title);
+                var query = new ListTitlesQuery(
+                    request.Type,
+                    request.FromReleaseDate,
+                    request.ToReleaseDate,
+                    request.NamePattern,
+                    request.OriginCountry,
+                    request.OriginalLanguage,
+                    request.Page,
+                    request.PageSize);
+
+                List<Responses.Titles.Models.Title> titles = [];
+                foreach (var title in await sender.Send(query))
+                {
+                    titles.Add(new(
+                        title.Id,
+                        title.ExternalId,
+                        title.Type,
+                        new(
+                            title.Metadata.Name,
+                            new(title.Metadata.Origin.Country, title.Metadata.Origin.Language),
+                            title.Metadata.Description,
+                            title.Metadata.SeasonNumber),
+                        title.ReleaseDate));
+                }
+
+                return Results.Ok(new ListTitlesResponse(titles));
             })
             .WithName("ListTitles")
             .WithOpenApi();
@@ -50,7 +93,7 @@ public static class Title
                     request.Description,
                     request.SeasonNumber);
 
-                return Results.Created(API_ENDPOINT, new { id = await sender.Send(cmd) });
+                return Results.Created(API_ENDPOINT, new CreateTitleResponse(await sender.Send(cmd)));
             })
             .WithName("PostCreateTitle")
             .WithOpenApi();

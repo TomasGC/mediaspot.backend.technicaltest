@@ -1,6 +1,6 @@
 ﻿using Mediaspot.Api.DTOs.Assets;
+using Mediaspot.Api.Responses.Assets;
 using Mediaspot.Application.Assets.Commands.Archive;
-using Mediaspot.Application.Assets.Commands.Create;
 using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
 using Mediaspot.Application.Assets.Commands.UpdateMetadata;
 using Mediaspot.Application.Assets.Queries.GetById;
@@ -19,14 +19,14 @@ public static class Asset
         group.MapGet("{id:guid}", async (Guid id, ISender sender) =>
             {
                 var asset = await sender.Send(new GetAssetByIdQuery(id));
-                return Results.Ok(asset);
+                return Results.Ok(DomainBaseAssetExtensions.ToResponse(asset as dynamic));
             })
             .WithName("GetAssetById")
             .WithOpenApi();
 
         group.MapPost("", async (BaseCreateAssetDto request, ISender sender) =>
             {
-                return Results.Created(API_ENDPOINT, new { id = await sender.Send(request.ToCommand()) });
+                return Results.Created(API_ENDPOINT, new CreateAssetResponse(await sender.Send(request.ToCommand())));
             })
             .WithName("PostCreateAsset")
             .WithOpenApi();
@@ -35,7 +35,7 @@ public static class Asset
             {
                 var cmd = new RegisterMediaFileCommand(id, request.Path, request.DurationSeconds);
 
-                return Results.Ok(new { mediaFileId = await sender.Send(cmd) });
+                return Results.Ok(new RegisterMediaFileResponse(await sender.Send(cmd)));
             })
             .WithName("PostRegisterMediaFile")
             .WithOpenApi();
